@@ -8,6 +8,8 @@ import {
   Bot,
   Camera,
   Car,
+  ChevronLeft,
+  ChevronRight,
   Circle,
   Clock3,
   Command,
@@ -18,19 +20,19 @@ import {
   Gauge,
   Image as ImageIcon,
   KeyRound,
-  Layers,
   LocateFixed,
   Lock,
   LogOut,
   MapPinned,
+  Moon,
   Navigation,
   Power,
   RefreshCw,
   Route,
   Search,
   Send,
-  Settings,
   ShieldCheck,
+  Sun,
   Thermometer,
   TimerReset,
   Unlock,
@@ -2722,10 +2724,14 @@ function App() {
           <BrandLogo compact />
           <div className="sidebar-user-row">
             <span className="brand-user">{auth.user?.name || auth.user?.email || 'Usuario Traccar'}</span>
-            <button className="sidebar-logout-mini" type="button" onClick={handleLogout} title="Sair">
-              <LogOut size={14} />
-              <span>Sair</span>
-            </button>
+            <div className="sidebar-user-actions">
+              <button className="sidebar-icon-btn" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} title={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}>
+                {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
+              </button>
+              <button className="sidebar-logout-mini" type="button" onClick={handleLogout} title="Sair">
+                <LogOut size={13} />
+              </button>
+            </div>
           </div>
         </div>
         <nav className="nav">
@@ -2736,16 +2742,12 @@ function App() {
           ))}
         </nav>
         <div className="sidebar-status-stack">
-          <Badge tone={health?.ok ? 'good' : 'warn'}><ShieldCheck size={14} /> Proxy {health?.ok ? 'OK' : 'verificando'}</Badge>
           <Badge tone="info"><Activity size={14} /> {lastUpdate ? `Atualizado ${formatTime(lastUpdate)}` : 'Sem atualização'}</Badge>
         </div>
         <div className="sidebar-support-row"><SupportWhatsapp compact /></div>
         <div className="sidebar-toolbox">
-          <button className="ghost-btn sidebar-control-btn" onClick={() => setSidebarHidden(true)} title="Recolher menu lateral">
-            <Layers size={17} /> Recolher
-          </button>
-          <button className="ghost-btn theme-toggle-btn" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} title={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}>
-            <Settings size={17} /> {theme === 'dark' ? 'Modo claro' : 'Modo escuro'}
+          <button className="ghost-btn sidebar-control-btn" onClick={() => setSidebarHidden(true)} title="Recolher menu lateral" aria-label="Recolher menu lateral">
+            <ChevronLeft size={17} />
           </button>
           <button className="primary-btn" onClick={() => loadData({ silent: true })} disabled={refreshing}>
             <RefreshCw size={17} /> {refreshing ? 'Atualizando...' : 'Atualizar'}
@@ -2757,7 +2759,7 @@ function App() {
       {sidebarHidden && (
         <div className="floating-icon-rail" aria-label="Menu recolhido">
           <button className="rail-toggle" type="button" title="Mostrar menu lateral" onClick={() => setSidebarHidden(false)}>
-            ☰
+            <ChevronRight size={18} />
           </button>
           {tabs.map(([key, label, Icon]) => (
             <button
@@ -2787,12 +2789,6 @@ function App() {
             <p>{subtitle}</p>
           </div>
           <div className="actions">
-            <button className="ghost-btn sidebar-control-btn" onClick={() => setSidebarHidden((value) => !value)} title={sidebarHidden ? 'Mostrar menu lateral' : 'Esconder menu lateral'}>
-              <Layers size={17} /> {sidebarHidden ? 'Mostrar menu' : 'Esconder menu'}
-            </button>
-            <button className="ghost-btn theme-toggle-btn" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} title={theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}>
-              <Settings size={17} /> {theme === 'dark' ? 'Modo claro' : 'Modo escuro'}
-            </button>
             <SupportWhatsapp compact />
             <button className="primary-btn" onClick={() => loadData({ silent: true })} disabled={refreshing}>
               <RefreshCw size={17} /> {refreshing ? 'Atualizando...' : 'Atualizar'}
